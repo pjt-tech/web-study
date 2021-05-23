@@ -2,7 +2,6 @@ package sec01.ex02;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -16,7 +15,6 @@ public class MemberDAO {
 	private static final String pwd = "tiger";
 	private Connection con;
 	private Statement stmt;
-	private PreparedStatement psmt;
 	
 	public List<MemberVO> listMembers() {
 		List<MemberVO> list = new ArrayList<MemberVO>();
@@ -24,9 +22,7 @@ public class MemberDAO {
 			connDB();
 			String query = "select * from t_member";
 			System.out.println(query);
-			//ResultSet rs = stmt.executeQuery(query);
-			psmt = con.prepareStatement(query);
-			ResultSet rs = psmt.executeQuery();
+			ResultSet rs = stmt.executeQuery(query);
 			
 			while(rs.next()) {
 				String id = rs.getString("id");
