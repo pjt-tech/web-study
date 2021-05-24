@@ -1,9 +1,8 @@
-package sec02.ex01;
+package sec02.ex02;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,14 +12,8 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 public class MemberDAO {
-	/*
-	 * private static final String driver = "oracle.jdbc.driver.OracleDriver";
-	 * private static final String url = "jdbc:oracle:thin:@localhost:1521:XE";
-	 * private static final String user = "scott"; private static final String pwd =
-	 * "tiger";
-	 */
+
 	private Connection con;
-	private Statement stmt;
 	private PreparedStatement pstmt;
 	private DataSource dataFactory;
 	
@@ -33,7 +26,6 @@ public class MemberDAO {
 			e.printStackTrace();
 		}
 	}
-	
 	
 	public List<MemberVO> listMembers() {
 		List<MemberVO> list = new ArrayList<MemberVO>();
@@ -69,16 +61,26 @@ public class MemberDAO {
 		return list;
 	}
 	
-	private void connDB() {
+	public void addMember(MemberVO memberVO) {
 		try {
-			/*
-			 * Class.forName(driver); System.out.println("Oracle 드라이버 로딩 성공"); con =
-			 * DriverManager.getConnection(url, user, pwd);
-			 * System.out.println("Connection 생성 성공"); stmt = con.createStatement();
-			 * System.out.println("Statement 생성 성공");
-			 */
+			con = dataFactory.getConnection();
+			String id = memberVO.getId();
+			String pwd = memberVO.getPwd();
+			String name = memberVO.getName();
+			String email = memberVO.getEmail();
 			
-		}catch(Exception e) {
+			String query = "insert into t_member";
+					query+=" (id,pwd,name,email)";
+					query+=" values(?,?,?,?)";
+			System.out.println(query);
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, id);
+			pstmt.setString(2, pwd);
+			pstmt.setString(3, name);
+			pstmt.setString(4, email);
+			pstmt.executeUpdate();
+			pstmt.close();
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
