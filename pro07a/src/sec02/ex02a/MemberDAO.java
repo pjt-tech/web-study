@@ -1,4 +1,4 @@
-package sec02.ex01;
+package sec02.ex02a;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,19 +21,22 @@ public class MemberDAO {
 	private PreparedStatement pstmt;
 	private DataSource dataFactory;
 	
+	public MemberDAO() {
+		try {
+			Context ctx = new InitialContext();
+			Context envContext = (Context) ctx.lookup("java:/comp/env");
+			dataFactory = (DataSource)envContext.lookup("jdbc/oracle");
+					
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public List<MemberVO> listMembers() {
 		List<MemberVO> list = new ArrayList<>();
 		try {
 			//connDB();
-			try {
-				Context ctx = new InitialContext();
-				Context envContext = (Context) ctx.lookup("java:/comp/env");
-				dataFactory = (DataSource)envContext.lookup("jdbc/oracle");
 						
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-			
 			conn = dataFactory.getConnection();
 			String query = "select * from t_member";
 			pstmt = conn.prepareStatement(query);
@@ -68,6 +71,40 @@ public class MemberDAO {
 			//stmt = conn.createStatement();
 			//System.out.println("Statement 생성 성공");
 			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void addMember(MemberVO vo) {
+		
+		try {
+			conn = dataFactory.getConnection();
+			String query = "insert into t_member(id,pwd,name,email) values(?,?,?,?)";
+			System.out.println(query);
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1,vo.getId());
+			pstmt.setString(2,vo.getPwd());
+			pstmt.setString(3, vo.getName());
+			pstmt.setString(4,vo.getEmail());
+			pstmt.executeUpdate();
+						
+			pstmt.close();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void deleteMember(MemberVO vo) {
+		try {
+		conn = dataFactory.getConnection();
+		String query = "delete from t_member where id = ?";
+		System.out.println(query);
+		pstmt = conn.prepareStatement(query);
+		pstmt.setString(1,vo.getId());
+		pstmt.executeUpdate();
+		
+		pstmt.close();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

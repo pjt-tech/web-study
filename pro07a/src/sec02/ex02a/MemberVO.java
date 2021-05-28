@@ -1,4 +1,4 @@
-package sec02.ex01;
+package sec02.ex02a;
 
 import java.util.Date;
 
