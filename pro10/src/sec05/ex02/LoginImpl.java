@@ -1,4 +1,4 @@
-package sec04.ex02;
+package sec05.ex02;
 
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionEvent;
@@ -28,7 +28,7 @@ public class LoginImpl implements HttpSessionListener {
      * @see HttpSessionListener#sessionCreated(HttpSessionEvent)
      */
     public void sessionCreated(HttpSessionEvent se)  { 
-         //System.out.println("技记积己");
+         System.out.println("技记积己");
          ++total_user;
     }
 
@@ -36,7 +36,7 @@ public class LoginImpl implements HttpSessionListener {
      * @see HttpSessionListener#sessionDestroyed(HttpSessionEvent)
      */
     public void sessionDestroyed(HttpSessionEvent se)  { 
-    	//System.out.println("技记辆丰");
+    	System.out.println("技记辆丰");
     	--total_user;
     }	
 }

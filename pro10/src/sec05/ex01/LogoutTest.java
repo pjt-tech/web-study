@@ -1,4 +1,4 @@
-package sec04.ex02;
+package sec05.ex01;
 
 import java.io.IOException;
 import java.io.PrintWriter;

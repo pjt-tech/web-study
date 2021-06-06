@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +15,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet implementation class LoginTest
  */
-@WebServlet("/login")
+//@WebServlet("/login")
 public class LoginTest extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     ServletContext context;
@@ -53,14 +52,12 @@ public class LoginTest extends HttpServlet {
 		out.println("아이디는 " + loginUser.user_id + "<br>");
 		out.println("총 접속자수는 " + LoginImpl.total_user + "<br>");
 		out.println("접속 아이디 : <br>");
-		
 		List list = (ArrayList)context.getAttribute("user_list");
 		for(int i = 0; i < user_list.size(); i++) {
 			out.println(list.get(i) + "<br>");
 		}
 		out.println("<a href='logout?user_id=" + user_id + "'>로그아웃</a>");
 		out.println("</body></html>");
-		
+		out.close();
 	}
-
 }
