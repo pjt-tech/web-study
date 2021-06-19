@@ -17,10 +17,10 @@
 	m.setId(id);
 	m.setPwd(pwd);
 	m.setName(name);
-	m.setEmail(email); */
-	MemberDAO dao = new MemberDAO();
+	m.setEmail(email); 
+	 MemberDAO dao = new MemberDAO();
 	dao.addMember(m);
-	List membersList = dao.listMembers();
+	List membersList = dao.listMembers(); */
 %>	
 
 <!DOCTYPE html>
@@ -36,7 +36,7 @@
 			<td width="7%">비밀번호</td>
 			<td width="5%">이름</td>
 			<td width="11%">이메일</td>
-			<td width="5%">가입일</td>
+			
 		</tr>
 
 	<tr align="center">
@@ -53,9 +53,7 @@
 		<td>
 			<jsp:getProperty name="m" property="email"/>
 		</td>		
-		<td>
-			<jsp:getProperty name="m" property="joinDate"/>
-		</td>
+		
 	</tr>
 
 
