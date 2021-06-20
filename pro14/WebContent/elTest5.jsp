@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
-    isELIgnored="false"
+    
     import="sec01.ex01.*,java.util.*"
 %>
 <jsp:useBean id="m1" class="sec01.ex01.MemberBean" scope="page"/>
