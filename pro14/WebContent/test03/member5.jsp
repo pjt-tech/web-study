@@ -8,13 +8,11 @@
     %>
     <c:set var="id" value="hong" scope="page"/>
     <c:set var="pwd" value="1234" scope="page"/>
-    <c:set var="name" value="${'홍길동'}" scope="page"/>
+    <c:set var="name" value="" scope="page"/>
     <c:set var="email" value="${'abcd@test.com'}" scope="page"/>
     <c:set var="age" value="${22 }" scope="page"/>
     <c:set var="height" value="${180 }" scope="page"/>
     
-    <c:remove var="age" />
-    <c:remove var="height"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,7 +20,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<table border="1" align="center">
+	<table border="1" align="center">
 		<tr align="center" bgcolor="#99ccff">
 			<td width="15%"><b>아이디</b></td>
 			<td width="15%"><b>비밀번호</b></td>
@@ -35,7 +33,7 @@
 		<c:choose>
 			<c:when test='${empty name}'>
 				<tr align="center">
-					<td colspan='5'>이름을 입력하세요~!!</td>
+					<td colspan='6'>이름을 입력하세요~!!</td>
 				</tr>
 			</c:when>
 		<c:otherwise>
