@@ -15,7 +15,7 @@
 	\${"hello" eq "hello"} : ${"hello" eq "hello"}<br><br>
 	
 	\${20=!10} : ${20!=10}<br>
-	\${20 ne 10} : ${20 ne 10}<br><br>
+<%-- 	\${20 ne 10} : ${20 ne 10}<br><br> --%>
 	\${"hello" != "apple"} : ${"hello" != "apple"}<br>
 	\${10<10} : ${10<10}<br>
 	\${10 lt 10} : ${10 lt 10}<br>

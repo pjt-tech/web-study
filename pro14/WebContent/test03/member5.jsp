@@ -26,8 +26,7 @@
 			<td width="15%"><b>비밀번호</b></td>
 			<td width="15%"><b>이름</b></td>
 			<td width="15%"><b>이메일</b></td>
-			<td width="15%"><b>나이</b></td>
-			<td width="15%"><b>키</b></td>
+			
 		</tr>
 		
 		<c:choose>
@@ -42,8 +41,7 @@
 			<td>${pwd}</td>
 			<td>${name}</td>
 			<td>${email}</td>
-			<td>${age}</td>
-			<td>${height}</td>
+			
 		</tr>
 		</c:otherwise>
 		</c:choose>	
