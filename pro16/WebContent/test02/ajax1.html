@@ -16,7 +16,7 @@ function fn_process() {
 			$('#message').append(data);
 		},
 		error:function(data,textStatus) {
-			alert("에러발생");
+			alert("code = "+ request.status + " message = " + request.responseText + " error = " + err);
 		},
 		complete:function(data,textStatus) {
 			alert("작업을 완료했습니다.");
