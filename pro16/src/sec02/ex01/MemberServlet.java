@@ -1,4 +1,4 @@
-package sec01.ex01;
+package sec02.ex01;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,16 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class AjaxTest1
+ * Servlet implementation class MemberServlet
  */
-@WebServlet("/ajaxTest2")
-public class AjaxTest2 extends HttpServlet {
+@WebServlet("/mem")
+public class MemberServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AjaxTest2() {
+    public MemberServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -27,7 +27,7 @@ public class AjaxTest2 extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doHandle(request,response);
 	}
 
@@ -35,20 +35,23 @@ public class AjaxTest2 extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		doHandle(request,response);
 	}
-	
 	private void doHandle (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
-		response.setContentType("text/html; charset=utf-8");
-		String result="";
+		response.setContentType("test/html; charset=utf-8");
+		String id = (String)request.getParameter("id");
+		System.out.println("id=" + id);
 		PrintWriter writer = response.getWriter();
-		result="<main><book>"+
-		"<title><![CDATA[초보자를 위한 자바 프로그래밍]]></title>" +
-		"<writer><![CDATA[인포북스 저 | 박진태]]</writer>"+
-		"<image><![CDATA[http://localhost:8090/pro16/image/image1.jpg]]></image>" +
-		"</book></main>";
-		System.out.println(result);
-		writer.print(result);
+		MemberDAO dao = new MemberDAO();
+		boolean overlappendID = dao.overlappendID(id);
+		if(overlappendID) {
+			writer.print("not_usable");
+		} else {
+			writer.print("usable");
+		}
+		
 	}
+
 }
