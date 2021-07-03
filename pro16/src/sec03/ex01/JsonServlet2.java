@@ -67,5 +67,4 @@ public class JsonServlet2 extends HttpServlet {
 		System.out.println(jsonInfo);
 		out.print(jsonInfo);
 	}
-
 }
