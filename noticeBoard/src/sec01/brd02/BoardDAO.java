@@ -1,4 +1,4 @@
-package sec01.brd01;
+package sec01.brd02;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -62,6 +62,52 @@ public class BoardDAO {
 			e.printStackTrace();
 		}
 		return list;
+	}
+	
+	private int getNewArticleNo() {
+		try {
+			con = dataFactory.getConnection();
+			String query = "select max(articleNO) from t_board";
+			System.out.println(query);
+			pstmt = con.prepareStatement(query);
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				return (rs.getInt(1) + 1);				
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	public void insertNewArticle(ArticleVO article) {
+		try {
+			con = dataFactory.getConnection();
+			int articleNO = getNewArticleNo();
+			int parentNO = article.getParentNO();
+			String title = article.getTitle();
+			String content = article.getContent();
+			String id = article.getId();
+			String imageFileName = article.getImageFileName();
+			
+			String query = "insert into t_board";
+					query+=" (articleno,parentno,title,content,imagefilename,id)";
+					query+=" values(?,?,?,?,?,?)";
+			System.out.println(query);
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, articleNO);
+			pstmt.setInt(2, parentNO);
+			pstmt.setString(3, title);
+			pstmt.setString(4, content);
+			pstmt.setString(5, imageFileName);
+			pstmt.setString(6, id);
+			pstmt.executeUpdate();
+			pstmt.close();
+			con.close();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -8,7 +8,6 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class BoardController
  */
-@WebServlet("/board/*")
+//@WebServlet("/board/*")
 public class BoardController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	BoardService boardService;
@@ -59,12 +58,12 @@ public class BoardController extends HttpServlet {
 			if(action == null) {
 				articleList = boardService.listArticles();
 				request.setAttribute("articleList",articleList);
-				nextPage = "noticeBoard/board01/listArticles.jsp";
+				nextPage = "/board01/listArticle.jsp";
 				
 			} else if(action.equals("/listArticles.do")) {
 				articleList = boardService.listArticles();
 				request.setAttribute("articleList",articleList);
-				nextPage = "noticeBoard/board01/listArticles.jsp";
+				nextPage = "/board01/listArticle.jsp";
 			}
 			RequestDispatcher dispatch = request.getRequestDispatcher(nextPage);
 			dispatch.forward(request, response);
