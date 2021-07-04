@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
-    import = "java.util.*,sec01.ex01.*"
+    import = "java.util.*,sec01.brd01.*"
 %>
 	
 <%
-	request.setCharacterEncoding("utf-8");
-%>
-<jsp:useBean id = "m" class="sec01.ex01.MemberBean" scope="page"/>
+		request.setCharacterEncoding("utf-8");
+	%>
+<jsp:useBean id = "m" class="sec01.brd01.MemberBean" scope="page"/>
 <jsp:setProperty name = "m" property="*" />
 <%
 	/* String id = request.getParameter("id");

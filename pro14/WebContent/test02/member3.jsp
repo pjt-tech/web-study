@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
-    import="sec01.ex01.*"%>
+    import="sec01.brd01.*"%>
    
 <!DOCTYPE html>
 <html>

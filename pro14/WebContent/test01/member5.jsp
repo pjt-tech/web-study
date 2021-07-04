@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
     isELIgnored="false"
-    import="java.util.*,sec01.ex01.*"%>
-   	<jsp:useBean id="m1" class="sec01.ex01.MemberBean"></jsp:useBean>
+    import="java.util.*,sec01.brd01.*"%>
+   	<jsp:useBean id="m1" class="sec01.brd01.MemberBean"></jsp:useBean>
 	<jsp:setProperty property="*" name="m1"/>
 	<jsp:useBean id="membersList" class="java.util.ArrayList"></jsp:useBean>
 	<jsp:useBean id="membersMap" class="java.util.HashMap"></jsp:useBean>

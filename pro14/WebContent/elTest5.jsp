@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
     
-    import="sec01.ex01.*,java.util.*"
+    import="sec01.brd01.*,java.util.*"
 %>
-<jsp:useBean id="m1" class="sec01.ex01.MemberBean" scope="page"/>
+<jsp:useBean id="m1" class="sec01.brd01.MemberBean" scope="page"/>
 <jsp:setProperty name="m1" property="name" value="딩고"/>
 <jsp:useBean id="m2" class="java.util.ArrayList" scope="page"/>
 <!DOCTYPE html>
