@@ -1,4 +1,4 @@
-package sec01.brd03;
+package sec01.brd04;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,6 +12,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +25,7 @@ import org.apache.commons.io.FileUtils;
 /**
  * Servlet implementation class BoardController
  */
-//@WebServlet("/board/*")
+@WebServlet("/board/*")
 public class BoardController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static String ARTICLE_IMAGE_REPO = "C:\\board\\article_image";
@@ -70,14 +71,14 @@ public class BoardController extends HttpServlet {
 			if(action == null) {
 				articleList = boardService.listArticles();
 				request.setAttribute("articleList",articleList);
-				nextPage = "/board02/listArticle.jsp";
+				nextPage = "/board03/listArticle.jsp";
 				
 			} else if(action.equals("/listArticles.do")) {
 				articleList = boardService.listArticles();
 				request.setAttribute("articleList",articleList);
-				nextPage = "/board02/listArticle.jsp";
+				nextPage = "/board03/listArticle.jsp";
 			} else if(action.equals("/articleForm.do")) {
-				nextPage = "/board02/articleForm.jsp";
+				nextPage = "/board03/articleForm.jsp";
 			} else if(action.equals("/addArticle.do")) {
 				Map<String, String> articleMap = upload(request, response);
 				String title = articleMap.get("title");
@@ -104,6 +105,11 @@ public class BoardController extends HttpServlet {
 						+ request.getContextPath()
 						+ "/board/listArticles.do';" + "</script>");
 				return;
+			} else if(action.equals("/viewArticle.do")) {
+				String articleNO = request.getParameter("articleNO");
+				articleVO = boardService.viewArticle(Integer.parseInt(articleNO));
+				request.setAttribute("article", articleVO);
+				nextPage = "/board03/viewArticle.jsp";
 			}
 			RequestDispatcher dispatch = request.getRequestDispatcher(nextPage);
 			dispatch.forward(request, response);
