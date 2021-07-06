@@ -1,7 +1,8 @@
-package sec01.brd02;
+package sec01.brd03;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,11 +20,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FileUtils;
 
 /**
  * Servlet implementation class BoardController
  */
-//@WebServlet("/board/*")
+@WebServlet("/board/*")
 public class BoardController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static String ARTICLE_IMAGE_REPO = "C:\\board\\article_image";
@@ -58,6 +61,7 @@ public class BoardController extends HttpServlet {
 	}
 	private void doHandle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String nextPage = "";
+		
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=utf-8;");
 		String action = request.getPathInfo();
@@ -80,14 +84,27 @@ public class BoardController extends HttpServlet {
 				String title = articleMap.get("title");
 				String content = articleMap.get("content");
 				String imageFileName = articleMap.get("imageFileName");
+				int articleNo = 0;
 				
 				articleVO.setParentNO(0);
 				articleVO.setId("park");
 				articleVO.setTitle(title);
 				articleVO.setContent(content);
 				articleVO.setImageFileName(imageFileName);
-				boardService.addArticle(articleVO);
-				nextPage = "/board/listArticles.do";
+				articleNo = boardService.addArticle(articleVO);
+				if(imageFileName != null && imageFileName.length() != 0) {
+					File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + imageFileName);
+					File destDir = new File(ARTICLE_IMAGE_REPO + "\\" + articleNo);
+					boolean b = destDir.mkdirs();
+					System.out.println(b);
+					FileUtils.moveFileToDirectory(srcFile, destDir, true);
+				}
+				PrintWriter pw = response.getWriter();
+				pw.print("<script>" + " alert('새글을 추가했습니다.');"
+						+ " location.href='"
+						+ request.getContextPath()
+						+ "/board/listArticles.do';" + "</script>");
+				return;
 			}
 			RequestDispatcher dispatch = request.getRequestDispatcher(nextPage);
 			dispatch.forward(request, response);
@@ -119,8 +136,8 @@ public class BoardController extends HttpServlet {
 						int idx = fileItem.getName().lastIndexOf("\\");
 						if(idx == -1) {
 							String fileName = fileItem.getName().substring(idx +1);
-							articleMap.put(fileItem.getFieldName(), fileName);
-							File uploadFile = new File(currentDirPath + "\\" + fileName);
+							
+							File uploadFile = new File(currentDirPath + "\\temp\\" + fileName);			
 							fileItem.write(uploadFile);
 						}
 					}
