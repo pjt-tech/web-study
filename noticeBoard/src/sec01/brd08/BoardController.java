@@ -1,4 +1,4 @@
-package sec01.brd06;
+package sec01.brd08;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,9 +12,11 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -24,7 +26,7 @@ import org.apache.commons.io.FileUtils;
 /**
  * Servlet implementation class BoardController
  */
-//@WebServlet("/board/*")
+@WebServlet("/board/*")
 public class BoardController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static String ARTICLE_IMAGE_REPO = "C:\\board\\article_image";
@@ -65,19 +67,38 @@ public class BoardController extends HttpServlet {
 		response.setContentType("text/html; charset=utf-8;");
 		String action = request.getPathInfo();
 		System.out.println("action:" + action);
+		HttpSession session;
 		try {
 			List<ArticleVO> articleList = new ArrayList<ArticleVO>();
 			if(action == null) {
-				articleList = boardService.listArticles();
-				request.setAttribute("articleList",articleList);
-				nextPage = "/board05/listArticle.jsp";
+				String _section = request.getParameter("section");
+				String _pageNum = request.getParameter("pageNum");
+				int section = Integer.parseInt(((_section == null)?"1":_section));
+				int pageNum = Integer.parseInt(((_pageNum == null)?"1":_pageNum));
+				Map<String,Integer> pagingMap = new HashMap<String, Integer>();
+				pagingMap.put("section", section);
+				pagingMap.put("pageNum", pageNum);
+				Map articlesMap = boardService.listArticles(pagingMap);
+				articlesMap.put("section", section);
+				articlesMap.put("pageNum", pageNum);
+				request.setAttribute("articlesMap",articlesMap);
+				nextPage = "/board07/listArticle.jsp";
 				
 			} else if(action.equals("/listArticles.do")) {
-				articleList = boardService.listArticles();
-				request.setAttribute("articleList",articleList);
-				nextPage = "/board05/listArticle.jsp";
+				String _section = request.getParameter("section");
+				String _pageNum = request.getParameter("pageNum");
+				int section = Integer.parseInt(((_section == null)?"1":_section));
+				int pageNum = Integer.parseInt(((_pageNum == null)?"1":_pageNum));
+				Map<String,Integer> pagingMap = new HashMap<String, Integer>();
+				pagingMap.put("section", section);
+				pagingMap.put("pageNum", pageNum);
+				Map articlesMap = boardService.listArticles(pagingMap);
+				articlesMap.put("section", section);
+				articlesMap.put("pageNum", pageNum);
+				request.setAttribute("articlesMap",articlesMap);
+				nextPage = "/board07/listArticle.jsp";
 			} else if(action.equals("/articleForm.do")) {
-				nextPage = "/board05/articleForm.jsp";
+				nextPage = "/board07/articleForm.jsp";
 			} else if(action.equals("/addArticle.do")) {
 				Map<String, String> articleMap = upload(request, response);
 				String title = articleMap.get("title");
@@ -108,7 +129,7 @@ public class BoardController extends HttpServlet {
 				String articleNO = request.getParameter("articleNO");
 				articleVO = boardService.viewArticle(Integer.parseInt(articleNO));
 				request.setAttribute("article", articleVO);
-				nextPage = "/board05/viewArticle.jsp";
+				nextPage = "/board07/viewArticle.jsp";
 			} else if (action.equals("/modArticle.do")) {
 				Map<String, String> articleMap = upload(request,response);
 				int articleNO = Integer.parseInt(articleMap.get("articleNO"));
@@ -151,6 +172,38 @@ public class BoardController extends HttpServlet {
 						+ " location.href='"
 						+ request.getContextPath()
 						+ "/board/listArticles.do';" + "</script>");
+				return;
+			} else if(action.equals("/replyForm.do")) {
+				int parentNO = Integer.parseInt(request.getParameter("parentNO"));
+				session = request.getSession();
+				session.setAttribute("parentNO",parentNO);
+				nextPage="/board07/replyForm.jsp";
+			} else if(action.equals("/addReply.do")) {
+				session = request.getSession();
+				int parentNO = (Integer)session.getAttribute("parentNO");
+				session.removeAttribute("parentNO");
+				Map<String, String> articleMap = upload(request,response);			
+				String title = articleMap.get("title");
+				String content = articleMap.get("content");
+				String imageFileName = articleMap.get("imageFileName");
+				articleVO.setParentNO(parentNO);
+				articleVO.setId("park");
+				articleVO.setTitle(title);
+				articleVO.setContent(content);
+				articleVO.setImageFileName(imageFileName);
+				int articleNO = boardService.addReply(articleVO);
+				if(imageFileName != null && imageFileName.length() !=0) {
+					String originalFileName = articleMap.get("orginalFileName");
+					File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + imageFileName);
+					File destDir = new File(ARTICLE_IMAGE_REPO + "\\" + articleNO);
+					destDir.mkdirs();					
+					FileUtils.moveFileToDirectory(srcFile, destDir, true);					
+				}
+				PrintWriter pw = response.getWriter();
+				pw.print("<script>" + " alert('답글을 추가했습니다.');"
+						+ " location.href='"
+						+ request.getContextPath()
+						+ "/board/viewArticle.do?articleNO=" +articleNO +"';" + "</script>");
 				return;
 			}
 			RequestDispatcher dispatch = request.getRequestDispatcher(nextPage);
